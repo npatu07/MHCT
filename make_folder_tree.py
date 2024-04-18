@@ -39,18 +39,22 @@ def print_directory_structure(root_dir, indent=''):
     folders = []
     for item in sorted(os.listdir(root_dir)):
         if os.path.isdir(os.path.join(root_dir, item)):
-            folders.append(item + "/")  # Add "/" to indicate it's a folder
+            folders.append(item)
         else:
             files.append(item)
+            
     # Sort files based on their extensions
     files.sort(key=lambda x: os.path.splitext(x)[1])
     # Print files first
     for file_name in files:
         print(indent + "├── " + file_name)
+
     # Then print folders
     for folder_name in folders:
-        print(indent + "├── " + folder_name)
-        print_directory_structure(os.path.join(root_dir, folder_name[:-1]), indent + "│   ")
+        if folder_name == (".git" or "__pycache__"): 
+            continue
+        print(indent + "├── ")
+        print_directory_structure(os.path.join(root_dir, folder_name), indent + "│   ")
 
 if __name__ == "__main__":
     current_directory = os.getcwd()
